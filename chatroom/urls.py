@@ -25,7 +25,7 @@ urlpatterns = [
     path('get/msg/', views.get_msg),
     path('storage/msg/', views.storage_msg),
     path('get/websocket/', views.get_websocket),
+    path('get/allwebsocket/', views.get_allwebsocket),
     path('add/websocket/', views.add_websocket),
     path('delete/websocket/', views.delete_websocket),
-    path('test/', views.test),
 ]

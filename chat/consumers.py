@@ -20,6 +20,7 @@ class ChatConsumer(WebsocketConsumer):
         print("websocket_rreceive-----message------------------------------>")
         print(message)
         message['uid'] = str(self.uid)
+        message['gid'] = str(self.group_id)
         async_to_sync(self.channel_layer.group_send)(
             self.group_id,
             {

@@ -195,8 +195,10 @@
 <script>
     {#用户名uid和房间号gid可以唯一确定一个websocket连接s#}
     var wsdir = {};
-    var ws = {}
+    var ws = {};
+    var allws = {};
     $(function () {
+        console.log("初始化1！");
         $.ajax({
             url: "/get/websocket/",
             type: "get",
@@ -208,6 +210,20 @@
                     for (var i = 0; i < ws.length; i++) {
                         wsdir[ws[i].fields.uid + ws[i].fields.gid] = buildWebsocket(ws[i].fields.uid, ws[i].fields.gid);
                     }
+                }
+            }
+        });
+    })
+    $(function () {
+        console.log("初始化2！");
+        $.ajax({
+            url: "/get/allwebsocket/",
+            type: "get",
+            data: {},
+            dataType: "JSON",
+            success: function (request) {
+                if (request.status) {
+                    allws = JSON.parse(request.allws);
                 }
             }
         });
@@ -227,10 +243,9 @@
     $('#joingroup').click(function () {
         var gid = $('#jointxt').val();
         var flag = false;
-
         {#flag用来标记,localStorage中是否有等与tag的房间号#}
-        for (var i = 0; i < ws.length; i++) {
-            if (ws[i].fields.gid == gid) {
+        for (var i = 0; i < allws.length; i++) {
+            if (allws[i].fields.gid == gid) {
                 flag = true;
                 break;
             }
@@ -248,7 +263,7 @@
             wsdir[uid + gid] = buildWebsocket(uid, gid);
             addwebsocket(uid, gid);
         }
-        window.location.href='/index/'  //假设后端传回url
+        window.location.href = '/index/'  //假设后端传回url
         window.location.reload()
     });
 
@@ -268,11 +283,9 @@
         var gid = $('#gidtxt').val();
         var flag = false;
 
-        {#flag用来标记,localStorage中是否有等与tag的房间号#}
-        console.log("--------------------------------------->");
-        console.log(ws);
-        for (var i = 0; i < ws.length; i++) {
-            if (ws[i].fields.gid == gid) {
+        {#flag用来标记,是否有等与tag的房间号#}
+        for (var i = 0; i < allws.length; i++) {
+            if (allws[i].fields.gid == gid) {
                 flag = true;
                 break;
             }
@@ -290,7 +303,7 @@
             wsdir[uid + gid] = buildWebsocket(uid, gid);
             addwebsocket(uid, gid);
         }
-        window.location.href='/index/'  //假设后端传回url
+        window.location.href = '/index/'  //假设后端传回url
         window.location.reload()
     });
 
@@ -359,10 +372,9 @@
     {#根据uid和gid建立一个websocket连接#}
 
     function buildWebsocket(uid, gid) {
-        if(wsdir[uid+gid]!=null){
-            var socket = wsdir[uid+gid];
-        }
-        else{
+        if (wsdir[uid + gid] != null) {
+            var socket = wsdir[uid + gid];
+        } else {
             var arg = "ws://127.0.0.1:8000/ws/chat/" + gid + "/" + uid + "/";
             var socket = new WebSocket(arg);
             wsdir[uid + gid] = socket;
@@ -371,17 +383,15 @@
         socket.onmessage = function (event) {
             var data = JSON.parse(event.data);
             var attr = "";
-            console.log("data.message.data=" + data.message.uid);
-            console.log("uid=" + uid);
-            if (data.message.uid == uid) {
-                attr = "right";
-            } else {
-                attr = "left";
+            var gid = $('#sendmsg').attr('gid');
+            if (data.message.gid == gid) {
+                if (data.message.uid == uid) {
+                    attr = "right";
+                } else {
+                    attr = "left";
+                }
+                generateli(data.message.time, data.message.text, data.message.uid, attr);
             }
-            console.log("attr=" + attr);
-            console.log("*************************************************");
-            console.log(data);
-            generateli(data.message.time, data.message.text, data.message.uid, attr);
         }
         return socket;
     }
@@ -390,17 +400,8 @@
     {#点击发送消息按钮,触发sendMessage事件#}
 
     function sendMessage() {
-        console.log("-------------------------测试代码---------------------------------");
-        for (var key in wsdir) {
-            console.log(key + ": " + wsdir[key]);
-        }
-        console.log("-------------------------测试代码---------------------------------");
 
         var bt = $('#sendmsg');
-        console.log(bt.attr('uid') + bt.attr('gid'));
-        console.log(bt.attr('uid'));
-        console.log(bt.attr('gid'));
-        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         var socket = wsdir[bt.attr('uid') + bt.attr('gid')];
         let tag = document.getElementById("inputtxt");
         socket.send(tag.value);
@@ -422,7 +423,7 @@
     function closeConn() {
         var bt = $('#sendmsg');
         var uid = bt.attr('uid');
-        var gid = bt.attr('gid')
+        var gid = bt.attr('gid');
         var socket = wsdir[uid + gid];
 
         socket.close();
@@ -430,7 +431,7 @@
         deletewesocket(uid, gid);
         key = uid + gid;
         delete ws.key;
-        window.location.href='/index/'  //假设后端传回url
+        window.location.href = '/index/'  //假设后端传回url
         window.location.reload()
     }
 
@@ -483,12 +484,6 @@
         location.href = "/log/";
     }
 
-    window.addEventListener('beforeunload', function (event) {
-        for (let key in wsdir) {
-            console.log("刷新了一次：");
-            wsdir[key].close();
-        }
-    });
 </script>
 </body>
 </html>

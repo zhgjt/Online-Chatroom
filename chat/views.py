@@ -81,7 +81,6 @@ def can_bejoin(request):
         return JsonResponse({"status": False, "msg": "房间号不能为空！"})
 
 
-
 # 根据gid获取聊天室的聊天记录,如果24小时内用户加入过该群聊，返回上次登录到目前为止的数据
 def get_msg(request):
     print("session_key------------>")
@@ -119,7 +118,16 @@ def get_websocket(request):
     if not objs:
         return JsonResponse({"status": False})
     queryset = serializers.serialize("json", objs)
+    all = Websocket.objects.all()
+    allws = serializers.serialize("json", all)
     return JsonResponse({"status": True, "queryset": queryset})
+
+def get_allwebsocket(request):
+    all = Websocket.objects.all()
+    if not all:
+        return JsonResponse({"status": False})
+    allws = serializers.serialize("json", all)
+    return JsonResponse({"status": True, "allws": allws})
 
 
 def add_websocket(request):
