@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>profile</title>
+
+    <link rel="stylesheet" href="/static/font/css/material-design-iconic-font.min.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datepicker.min.css" type="text/css">
+
+    <link rel="stylesheet" href="/static/css/style.min.css" type='text/css'>
+</head>
+<body>
+<div id="layout" class="theme-cyan">
+
+    <!--    左侧导航条-->
+    <div class="navigation navbar justify-content-center py-xl-4 py-md-3 py-0 px-3">
+
+        <div class="nav flex-md-column nav-pills flex-grow-1" role="tablist" aria-orientation="vertical">
+            <a class="mb-xl-3 mb-md-2 nav-link" data-toggle="pill" href="profile.html" role="tab">
+                <img src="/static/images/user1.jpg" class="avatar sm rounded-circle" alt="user avatar"/>
+            </a>
+            <a class="mb-xl-3 mb-md-2 nav-link" data-toggle="pill" href="index.html" role="tab"><i
+                    class="zmdi zmdi-comment-alt"></i></a>
+            <a class="mt-xl-3 mt-md-2 nav-link" data-toggle="pill" href="setting.html" role="tab"><i
+                    class="zmdi zmdi-settings"></i></a>
+        </div>
+
+        <button type="submit" class="btn sidebar-toggle-btn shadow-sm"><i class="zmdi zmdi-menu"></i></button>
+    </div>
+
+
+    <!--    个人信息-->
+    <div class="sidebar border-end py-xl-4 py-3 px-xl-4 px-3" style="background-image: url('/static/images/background.jpg')">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="nav-tab-user" role="tabpanel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 text-primary">个人信息</h3>
+                    <div>
+                        <a href="log.html" title="" class="btn btn-dark">退出</a>
+                    </div>
+                </div>
+
+                <div class="card border-0 text-center pt-3 mb-4">
+                    <div class="card-body">
+                        <div class="card-user-avatar">
+                            <img src="/static/images/user1.jpg" alt="avatar"/>
+                        </div>
+                        <div class="card-user-detail mt-4">
+                            <h5>hanxueling</h5>
+                            <span class="text-muted">1234567@qq.com</span>
+                            <p>+86-110</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="main px-xl-5 px-lg-4 px-3">
+
+        <div class="chat-body" style="background-image: url('/static/images/background.jpg')">
+
+            <div class="chat-header border-bottom py-xl-4 py-md-3 py-2">
+                <div class="container-xxl">
+                    <div class="row align-items-center">
+                        <div class="col-6 col-xl-4">
+                            <div class="media">
+                                <div class="me-3 show-user-detail">
+                                    <span class="status rounded-circle"></span>
+                                    <img class="avatar rounded-circle" src="/static/images/user3.jpg" alt="avatar">
+                                </div>
+                                <div class="media-body overflow-hidden">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <h6 class="text-truncate mb-0 me-auto">凤姐</h6>
+                                    </div>
+                                    <div class="text-truncate">在线</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-content">
+                <div class="container-xxl">
+                    <ul class="list-unstyled py-4">
+
+                        <li class="d-flex message">
+
+                            <div class="mr-lg-3 me-2">
+                                <img class="avatar sm rounded-circle" src="/static/images/user3.jpg" alt="avatar">
+                            </div>
+
+                            <div class="message-body">
+                                <span class="date-time text-muted">凤姐, 晚上7:19</span>
+                                <div class="message-row d-flex align-items-center">
+                                    <div class="message-content p-3">在吗
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="d-flex message">
+
+                            <div class="mr-lg-3 me-2">
+                                <img class="avatar sm rounded-circle" src="/static/images/user3.jpg" alt="avatar">
+                            </div>
+
+                            <div class="message-body">
+                                <span class="date-time text-muted">凤姐, 晚上7:19</span>
+                                <div class="message-row d-flex align-items-center">
+                                    <div class="message-content p-3">晚上有空吗？
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="d-flex message right">
+                            <div class="message-body">
+                                <span class="date-time text-muted">晚上7:20</span>
+                                <div class="message-row d-flex align-items-center justify-content-end">
+                                    <div class="message-content border p-3">没空</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chat-footer border-top py-xl-4 py-lg-2 py-2">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group align-items-center">
+
+                                <input type="text" class="form-control border-0 pl-0"
+                                       placeholder="输入信息...">
+
+                                <div class="input-group-append">
+<span class="input-group-text border-0 pr-0">
+<button type="submit" class="btn btn-primary">
+<span class="d-none d-md-inline-block me-2">发送</span>
+<i class="zmdi zmdi-mail-send"></i>
+</button>
+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container-xxl" style="text-align: center">
+    <p>hanxueling</p>
+</div>
+</body>
+</html>

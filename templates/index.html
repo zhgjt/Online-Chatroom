@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" href="/static/font/css/material-design-iconic-font.min.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/bootstrap-datepicker.min.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/style.min.css" type='text/css'>
+    <script src="/static/js/jquery-3.2.0.min.js"></script>
+</head>
+<body>
+<div id="layout" class="theme-cyan">
+
+    <!--    左侧导航条-->
+    <div class="navigation navbar justify-content-center py-xl-4 py-md-3 py-0 px-3">
+
+        <div class="nav flex-md-column nav-pills flex-grow-1" role="tablist" aria-orientation="vertical">
+            <a class="mb-xl-3 mb-md-2 nav-link" data-toggle="pill" href="/index/" role="tab">
+                <img src="/static/images/user1.jpg" class="avatar sm rounded-circle" alt="user avatar"/>
+            </a>
+            <a class="mb-xl-3 mb-md-2 nav-link" type="button" id="joinclick"><i
+                    class="zmdi zmdi-plus"></i></a>
+            <a class="mt-xl-3 mt-md-2 nav-link" type="button" id="createclick"><i
+                    class="zmdi zmdi-account-add"></i></a>
+        </div>
+
+        <button type="submit" class="btn sidebar-toggle-btn shadow-sm"><i class="zmdi zmdi-menu"></i></button>
+    </div>
+
+
+    <!--    个人信息-->
+    <div class="sidebar border-end py-xl-4 py-3 px-xl-4 px-3"
+         style="background-image: url('/static/images/background.jpg')">
+        <div class="tab-content">
+
+            <div class="tab-pane fade show active" id="indexpage" role="tabpanel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 text-primary">消息列表</h3>
+                    <div>
+                        <a class="btn btn-dark" type="button" onclick="leave();">退出</a>
+                    </div>
+                </div>
+                <ul class="chat-list">
+                    {% for e in list %}
+                        <li>
+                            <a class="card" type="button" onclick="selectchat(this);" gid={{ e }}>
+                                <div class="card-body">
+                                    <div class="media">
+                                        <div class="avatar me-3">
+                                            <span class="status rounded-circle"></span>
+                                            <img class="avatar rounded-circle" src="/static/images/user3.jpg"
+                                                 alt="avatar">
+                                        </div>
+                                        <div class="media-body overflow-hidden">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <h6 class="text-truncate mb-0 me-auto">{{ e }}</h6>
+                                                <p class="small text-muted text-nowrap ms-4 mb-0">聊天室</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="joinpage" role="tabpanel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 text-primary">房间号</h3>
+                    <div>
+                        <input type="text" class="form-control form-control-lg" id="jointxt"
+                               placeholder="加入房间号...">
+                    </div>
+                    <div>
+                        <a class="btn btn-dark" type="button" id="joingroup">加入</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="createpage" role="tabpanel">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 text-primary">房间号</h3>
+                    <div>
+                        <input type="text" class="form-control form-control-lg" id="gidtxt"
+                               placeholder="创建房间...">
+                    </div>
+                    <div>
+                        <a class="btn btn-dark" type="button" id="creategroup">创建</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main px-xl-5 px-lg-4 px-3" style="display: none">
+
+        <div class="chat-body" style="background-image: url('/static/images/background.jpg')">
+
+            <div class="chat-header border-bottom py-xl-4 py-md-3 py-2">
+                <div class="container-xxl">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <div class="media">
+                                <div class="me-3 show-user-detail">
+                                    <span class="status rounded-circle"></span>
+                                    <img class="avatar rounded-circle" src="/static/images/user3.jpg" alt="avatar">
+                                </div>
+                                <div class="media-body overflow-hidden">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <h6 class="text-truncate mb-0 me-auto" id="roomid">{{ gid }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6" style="text-align: right">
+                            <a class="btn btn-dark" type="button" onclick="closeConn();">退出聊天室</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-content">
+                <div class="container-xxl">
+                    <ul class="list-unstyled py-4" id="chatbox">
+
+                        <li class="d-flex message">
+
+                            <div class="mr-lg-3 me-2">
+                                <img class="avatar sm rounded-circle" src="/static/images/user3.jpg" alt="avatar">
+                            </div>
+
+                            <div class="message-body">
+                                <span class="date-time text-muted">凤姐, 晚上7:19</span>
+                                <div class="message-row d-flex align-items-center">
+                                    <div class="message-content p-3">在吗
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="d-flex message">
+
+                            <div class="mr-lg-3 me-2">
+                                <img class="avatar sm rounded-circle" src="/static/images/user3.jpg" alt="avatar">
+                            </div>
+
+                            <div class="message-body">
+                                <span class="date-time text-muted">凤姐, 晚上7:19</span>
+                                <div class="message-row d-flex align-items-center">
+                                    <div class="message-content p-3">晚上有空吗？
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="d-flex message right">
+                            <div class="message-body">
+                                <span class="date-time text-muted">晚上7:20</span>
+                                <div class="message-row d-flex align-items-center justify-content-end">
+                                    <div class="message-content border p-3">没空</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chat-footer border-top py-xl-4 py-lg-2 py-2">
+                <div class="container-xxl">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group align-items-center">
+
+                                <input type="text" class="form-control border-0 pl-0" id="inputtxt"
+                                       placeholder="输入信息...">
+
+                                <div class="input-group-append">
+<span class="input-group-text border-0 pr-0">
+<button type="button" class="btn btn-primary" id="sendmsg" onclick="sendMessage();" uid={{ uid }} gid={{ gid }} >
+<span class="d-none d-md-inline-block me-2">发送</span>
+<i class="zmdi zmdi-mail-send"></i>
+</button>
+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    {#用户名uid和房间号gid可以唯一确定一个websocket连接s#}
+    var wsdir = {};
+    var ws = {}
+    $(function () {
+        $.ajax({
+            url: "/get/websocket/",
+            type: "get",
+            data: {},
+            dataType: "JSON",
+            success: function (request) {
+                if (request.status) {
+                    ws = JSON.parse(request.queryset);
+                    for (var i = 0; i < ws.length; i++) {
+                        wsdir[ws[i].fields.uid + ws[i].fields.gid] = buildWebsocket(ws[i].fields.uid, ws[i].fields.gid);
+                    }
+                }
+            }
+        });
+    })
+
+
+    $('#joinclick').click(function () {
+        $('.tab-pane').removeClass('active show');
+        $('#joinpage').addClass('active show');
+    });
+    $('#createclick').click(function () {
+        $('.tab-pane').removeClass('active show');
+        $('#createpage').addClass('active show');
+    });
+
+    {#点击加入聊天室按钮，建立websocket连接，判断房间号存不存在，采用localStrage判断是否存不存在#}
+    $('#joingroup').click(function () {
+        var gid = $('#jointxt').val();
+        var flag = false;
+
+        {#flag用来标记,localStorage中是否有等与tag的房间号#}
+        for (var i = 0; i < ws.length; i++) {
+            if (ws[i].fields.gid == gid) {
+                flag = true;
+                break;
+            }
+        }
+        {#如果输入房间号为空#}
+        if (gid == "") alert("输入房间号为空！");
+        else if (!flag) {
+            {#如果不存在#}
+            alert("输入的房间号不存在！");
+        } else {
+            {#建立websocket连接，uid和gid唯一确定一个websocket连接#}
+            var uid = $('#sendmsg').attr('uid');
+            var data = {uid: uid, gid: gid};
+
+            wsdir[uid + gid] = buildWebsocket(uid, gid);
+            addwebsocket(uid, gid);
+        }
+        window.location.href='/index/'  //假设后端传回url
+        window.location.reload()
+    });
+
+    function addwebsocket(uid, gid) {
+        $.ajax({
+            url: "/add/websocket/",
+            type: "get",
+            data: {uid: uid, gid: gid},
+            dataType: "JSON",
+            success: function (request) {
+            }
+        });
+    }
+
+    {#点击创建聊天室按钮，建立websocket连接#}
+    $('#creategroup').click(function () {
+        var gid = $('#gidtxt').val();
+        var flag = false;
+
+        {#flag用来标记,localStorage中是否有等与tag的房间号#}
+        console.log("--------------------------------------->");
+        console.log(ws);
+        for (var i = 0; i < ws.length; i++) {
+            if (ws[i].fields.gid == gid) {
+                flag = true;
+                break;
+            }
+        }
+        {#如果输入房间号为空#}
+        if (gid == "") alert("输入房间号为空！");
+        else if (flag) {
+            {#如果不存在#}
+            alert("输入的房间号已存在！");
+        } else {
+            {#建立websocket连接，uid和gid唯一确定一个websocket连接#}
+            var uid = $('#sendmsg').attr('uid');
+            var data = {uid: uid, gid: gid};
+
+            wsdir[uid + gid] = buildWebsocket(uid, gid);
+            addwebsocket(uid, gid);
+        }
+        window.location.href='/index/'  //假设后端传回url
+        window.location.reload()
+    });
+
+
+    {#根据提供的参数，生成一个li标签#}
+
+    function generateli(time, msg, uid, attr) {
+        if (attr == "left") {
+            var div1 = document.createElement('div');
+            div1.classList.add('message-content', 'p-3');
+            div1.textContent = msg;
+
+            var div2 = document.createElement('div');
+            div2.classList.add('message-row', 'd-flex', 'align-items-center');
+            div2.appendChild(div1);
+
+            var span1 = document.createElement('span');
+            span1.classList.add('class="date-time', 'text-muted');
+            span1.textContent = uid + ',' + time;
+
+            var div3 = document.createElement('div');
+            div3.classList.add('message-body');
+            div3.appendChild(span1);
+            div3.appendChild(div2);
+
+            var img1 = document.createElement('img');
+            img1.classList.add('avatar', 'sm', 'rounded-circle');
+            img1.src = "/static/images/user3.jpg";
+
+            var div4 = document.createElement('div');
+            div4.classList.add('mr-lg-3', 'me-2');
+            div4.appendChild(img1);
+
+            var li1 = document.createElement('li');
+            li1.classList.add('d-flex', 'message');
+            li1.appendChild(div4);
+            li1.appendChild(div3);
+
+            document.getElementById('chatbox').appendChild(li1);
+        } else {
+            var div1 = document.createElement('div');
+            div1.classList.add('message-content', 'border', 'p-3');
+            div1.textContent = msg;
+
+            var div2 = document.createElement('div');
+            div2.classList.add('message-row', 'd-flex', 'align-items-center', 'justify-content-end');
+            div2.appendChild(div1);
+
+            var span1 = document.createElement('span');
+            span1.classList.add('date-time', 'text-muted');
+            span1.textContent = uid + ',' + time;
+
+            var div3 = document.createElement('div');
+            div3.classList.add('message-body');
+            div3.appendChild(span1);
+            div3.appendChild(div2);
+
+            var li1 = document.createElement('li');
+            li1.classList.add('d-flex', 'message', 'right');
+            li1.appendChild(div3);
+
+            document.getElementById('chatbox').appendChild(li1);
+        }
+    }
+
+    {#根据uid和gid建立一个websocket连接#}
+
+    function buildWebsocket(uid, gid) {
+        if(wsdir[uid+gid]!=null){
+            var socket = wsdir[uid+gid];
+        }
+        else{
+            var arg = "ws://127.0.0.1:8000/ws/chat/" + gid + "/" + uid + "/";
+            var socket = new WebSocket(arg);
+            wsdir[uid + gid] = socket;
+        }
+
+        socket.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            var attr = "";
+            console.log("data.message.data=" + data.message.uid);
+            console.log("uid=" + uid);
+            if (data.message.uid == uid) {
+                attr = "right";
+            } else {
+                attr = "left";
+            }
+            console.log("attr=" + attr);
+            console.log("*************************************************");
+            console.log(data);
+            generateli(data.message.time, data.message.text, data.message.uid, attr);
+        }
+        return socket;
+    }
+
+
+    {#点击发送消息按钮,触发sendMessage事件#}
+
+    function sendMessage() {
+        console.log("-------------------------测试代码---------------------------------");
+        for (var key in wsdir) {
+            console.log(key + ": " + wsdir[key]);
+        }
+        console.log("-------------------------测试代码---------------------------------");
+
+        var bt = $('#sendmsg');
+        console.log(bt.attr('uid') + bt.attr('gid'));
+        console.log(bt.attr('uid'));
+        console.log(bt.attr('gid'));
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        var socket = wsdir[bt.attr('uid') + bt.attr('gid')];
+        let tag = document.getElementById("inputtxt");
+        socket.send(tag.value);
+        var str = tag.value;
+        tag.value = "";
+        {#下面的ajax把消息添加到Message表中#}
+        $.ajax({
+            url: "/storage/msg/",
+            type: "get",
+            data: {msg: str, gid: bt.attr('gid')},
+            dataType: "JSON",
+            success: function (request) {
+            }
+        })
+    }
+
+    {#点击退出按钮,触发sendMessage事件#}
+
+    function closeConn() {
+        var bt = $('#sendmsg');
+        var uid = bt.attr('uid');
+        var gid = bt.attr('gid')
+        var socket = wsdir[uid + gid];
+
+        socket.close();
+
+        deletewesocket(uid, gid);
+        key = uid + gid;
+        delete ws.key;
+        window.location.href='/index/'  //假设后端传回url
+        window.location.reload()
+    }
+
+    function deletewesocket(uid, gid) {
+        $.ajax({
+            url: "/delete/websocket/",
+            type: "get",
+            data: {uid: uid, gid: gid},
+            dataType: "JSON",
+            success: function (request) {
+            }
+        });
+
+    }
+
+
+    {#当该房间号的选项卡被选中触发事件#}
+
+    function selectchat(self) {
+        var gid = $(self).attr('gid');
+        $('#roomid').text(gid);
+        $('#sendmsg').attr('gid', gid);
+        $.ajax({
+            url: "/get/msg/",
+            type: "get",
+            data: {gid: gid},
+            dataType: "JSON",
+            success: function (request) {
+                {#把前端发过来的数据，添加到chatbox中#}
+                if (request.status) {
+                    var objs = JSON.parse(request.queryset);
+                    var uid = $('#sendmsg').attr('uid');
+                    let ulElement = document.getElementById('chatbox'); // 替换 'yourUlId' 为你的 ul 元素的实际 ID
+                    ulElement.innerHTML = ''; // 将 ul 元素的内容设置为空字符串
+                    for (var i = 0; i < objs.length; i++) {
+                        if (objs[i].fields.uid == uid) {
+                            generateli(objs[i].fields.time, objs[i].fields.msg, objs[i].fields.uid, "right");
+                        } else {
+                            generateli(objs[i].fields.time, objs[i].fields.msg, objs[i].fields.uid, "left");
+                        }
+                    }
+                }
+            }
+        })
+        $('.main').css('display', '');
+    }
+
+    function leave() {
+        {#如果退出登录#}
+        location.href = "/log/";
+    }
+
+    window.addEventListener('beforeunload', function (event) {
+        for (let key in wsdir) {
+            console.log("刷新了一次：");
+            wsdir[key].close();
+        }
+    });
+</script>
+</body>
+</html>
